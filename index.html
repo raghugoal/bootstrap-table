@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Bootstrap Table</title>    
+    <link href="style/bootstrap.min.css" rel="stylesheet">
+    <link href="style/bootstrap-table.min.css" rel="stylesheet">
+
+    
+    <script src="scriptlib/jquery-3.5.0.min.js"></script>
+    <script src="scriptlib/bootstrap.min.js"></script>
+    <script src="scriptlib/bootstrap-table.min.js"></script>
+    <style>
+	.fixed-table-border{
+	width: 1110px !important;
+	}
+	</style>
+</head>
+<body>
+<div class="container">
+<div id="toolbar">
+  <button id="button" class="btn btn-secondary">Load Data</button>
+</div>
+
+    <table id="table"
+           data-toggle="table"
+           data-toolbar="#toolbar"
+		   data-height="460"
+		   data-side-pagination="client"
+           >
+        <thead>
+        <tr>
+            <th data-field="id">Id</th>
+            <th data-field="name">Name</th>
+			<th data-field="url">URL</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<script>
+var $table = $('#table')
+  var $button = $('#button')
+$(function() {
+    $button.click(function () {
+	ajaxRequest()
+    })
+  })
+function ajaxRequest() {
+    $.ajax({
+        type: "GET",
+        url: "https://aimtell.com/files/sites.json",
+        dataType: "json",
+        success: function (data) {
+		  var rows = []
+    for (var i = 0; i < data.sites.length; i++) {
+      rows.push({
+        id: data.sites[i].id,
+        name: data.sites[i].name,
+        url: data.sites[i].url
+      })
+	 }
+	
+	$table.bootstrapTable('load', rows)
+	
+        },
+        error: function (er) {
+            params.error(er);
+        }
+    });
+}
+
+</script>
+</body>
+</html>
